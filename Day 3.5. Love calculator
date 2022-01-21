@@ -1,0 +1,30 @@
+# Fr Jan 21, 2022
+# Day 3. Exercise 5. Love calculator.
+# To work out the love score between two people:
+# Take both people's names and check for the number of times the letters in the word TRUE occurs. 
+# Then check for the number of times the letters in the word LOVE occurs. 
+# Then combine these numbers to make a 2 digit number.
+
+print("Welcome to the Love Calculator!")
+name1 = input("What is your name? \n")
+name2 = input("What is their name? \n")
+
+# Combine names and put in lower case:
+
+name = name1 + name2
+name_lower_case = name.lower()
+
+# Count letters: 
+
+count_true = str( name_lower_case.count("t") + name_lower_case.count("r") + name_lower_case.count("u") + name_lower_case.count("e") )
+count_love = str( name_lower_case.count("l") + name_lower_case.count("o") + name_lower_case.count("v") + name_lower_case.count("e") )
+love = int(count_true + count_love)
+
+# Output of the scores: 
+
+if ( love <= 10 ) or ( love >= 90 ):
+    print(f"Your score is {love}, you go together like coke and mentos.")
+elif ( love >= 40 ) and ( love <= 50 ):
+    print(f"Your score is {love}, you are alright together.")
+else:
+    print(f"Your score is {love}.")
