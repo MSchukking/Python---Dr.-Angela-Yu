@@ -1,0 +1,16 @@
+# Tu Jan 25, 2022
+# Day 4.1 (D4.42):
+
+# Write a virtual coin toss program. It will randomly tell the user "Heads" or "Tails".
+
+# Importing the "random" module
+import random
+
+# Create random number:
+random_no = random.randint(0, 1)
+
+# 0 is Tails, 1 is Heads: 
+if random_no  == 0:
+    print("Tails")
+else:
+    print("Heads")
