@@ -1,0 +1,25 @@
+# We Jan 26, 2022
+# Day 4.2. (D4.44): Bankers Roulette
+# After food and drinks in a restaurant, who is going to pay the bill?
+
+# Input who is at the table?: 
+names_string = input("Give me everybody's names, separated by a comma. ")
+
+# .split(", ") -> Takes out ", " and put the separate items in a list 
+names = names_string.split(", ")
+
+# Number of items (as integer) in the list "names"
+length = len(names) 
+
+# Generate random number (integer) from number of items in the list:
+import random
+random = random.randint(0, length - 1)
+
+# Name of the random number in the list:
+paying = names[random]
+
+# Print who is paying: 
+print(f"{paying} is going to buy the meal today!")
+
+# NOTE: A faster/easier way to do this is by using:
+# paying = random.choice(names)
