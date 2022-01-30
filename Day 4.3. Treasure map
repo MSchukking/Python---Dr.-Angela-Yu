@@ -1,0 +1,22 @@
+# Sa Jan 29, 2022
+# Day 4.3. (D4.46): Treasure map
+
+# Write a program that allows you to mark ("X") a square on the map using a two-digit system.
+# The first digit is the vertical column number and the second digit is the horizontal row number.
+
+# Given starting code (don't change)
+row1 = ["⬜️","⬜️","⬜️"]
+row2 = ["⬜️","⬜️","⬜️"]
+row3 = ["⬜️","⬜️","⬜️"]
+map = [row1, row2, row3]
+# Put the different rows underneath each other: 
+print(f"{row1}\n{row2}\n{row3}")
+position = input("Where do you want to put the treasure? ")
+
+# My code: 
+column = int(position[0])
+row = int(position[1])
+map[row-1][column-1] = "X"
+
+# Given final code (don't change)
+print(f"{row1}\n{row2}\n{row3}")
