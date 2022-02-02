@@ -1,0 +1,28 @@
+# We Feb 2, 2022
+# Day 5.1. (D5.51) Exercise: 
+
+# 🚨 Don't change the code below 👇
+student_heights = input("Input a list of student heights ").split()
+for n in range(0, len(student_heights)):
+  student_heights[n] = int(student_heights[n])
+# 🚨 Don't change the code above 👆
+
+#Write your code below this row 👇
+
+# NOTE: Not allowed to use the len() and sum() function for this exercise. 
+# 1. Use for loop to add all the items together
+# 2. Use for loop to figure out how many items there are in the list
+# 3. Calculate the average height 
+# Use round(): rounds the average height before you print it (see day 2.24)
+
+# Make variables that are integers:
+sum_heights = 0
+number_students = 0
+
+# Mimic the sum function (in sum_heights) and len function (in number_students):
+for height in student_heights:
+  sum_heights += height
+  number_students += 1
+  
+# Print and calculate the average height:
+print(round(sum_heights / number_students))
