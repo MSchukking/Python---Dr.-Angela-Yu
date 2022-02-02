@@ -1,0 +1,15 @@
+# We Feb 2, 2022
+# Day 5.(D5.54) Exercise 5.3. Adding even numbers 
+
+# Write a code to calculate the sum of all even numbers from 1 to 100. 
+# Thus, the first even number would be 2 and the last one is 100: 
+
+# Create a integer variable
+even = 0
+
+# Write for loop that adds all even numbers from 2 to 100: 
+for number in range(0, 101, 2):
+  even += number
+  
+# Print the result: 
+print(even)
