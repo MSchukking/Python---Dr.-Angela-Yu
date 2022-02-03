@@ -1,0 +1,21 @@
+# Th Feb 3, 2022
+# Day 5.(D5.55) Exercise 5.4. FizzBuzz 
+
+# Write a program that automatically prints the solution of the FizzBuzz game.
+# The FizzBuzz game:
+# Print each number from 1 to 100 in turn, however:  
+# When the number is divisible by 3 instead print "Fizz"
+# When the number is divisible by 5 instead print "Buzz"
+# When the number is divisible by 3 and 5 instead print "FizzBuzz"
+
+#Write your code below this row 👇
+
+for number in range(1, 101):
+  if number % 3 == 0 and number % 5 != 0:
+    print("Fizz")
+  elif number % 3 != 0  and number % 5 == 0:
+    print("Buzz")
+  elif number % 3 == 0 and number % 5 == 0:
+    print("FizzBuzz")
+  else:
+    print(number)
