@@ -1,4 +1,4 @@
-# Python---Dr.-Angela-Yu
+# Python-Dr.-Angela-Yu
 100 Days of Code: The complete Python Pro Bootcamp 2022
 
 In 2022 I want to learn Python. 
