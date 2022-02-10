@@ -1,0 +1,42 @@
+# We Feb 9, 2022
+# Day 8 (D8.85). Cipher code - encryption
+
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+text = input("Type your message:\n").lower()
+shift = int(input("Type the shift number:\n"))
+
+#TODO-1: Create a function called 'encrypt' that takes the 'text' and 'shift' as inputs.
+
+def encrypt(text, shift): 
+
+    #TODO-2: Inside the 'encrypt' function, shift each letter of the 'text' forwards in the alphabet by the shift amount and print the encrypted text.  
+    #e.g. 
+    #plain_text = "hello"
+    #shift = 5
+    #cipher_text = "mjqqt"
+    #print output: "The encoded text is mjqqt"
+    text_list = list(text)
+    cipher_text = []  # make the new list "cipher_text"
+    for letter in text_list:  # Letter is a single item in the list "text_list"
+        index = alphabet.index(letter)
+        shift_index = shift + index
+        if shift_index > 25: # 26 letters - 1
+            new_letter = alphabet[shift_index - 26]
+        else: 
+            new_letter = alphabet[index + shift]
+        cipher_text.append(new_letter)  #add the new letter to the list "cipher_text"
+    cipher_text = ''.join(cipher_text)
+    print(f'The encoded text is \"{cipher_text}\".')
+
+
+
+
+    ##HINT: How do you get the index of an item in a list:
+    #https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
+
+    ##🐛Bug alert: What happens if you try to encode the word 'civilization'?🐛
+
+#TODO-3: Call the encrypt function and pass in the user inputs. You should be able to test the code and encrypt a message. 
+encrypt(text, shift)
