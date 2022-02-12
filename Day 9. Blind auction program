@@ -1,0 +1,32 @@
+# Sa Feb 12, 2022
+# Day 9. Blind auction program
+
+from replit import clear
+from art import logo
+#HINT: You can call clear() to clear the output in the console.
+print(logo)
+print("Welcome to the secret auction program.")
+
+more_bidders = True
+auction_dict = {}
+
+while more_bidders: 
+    name = input("What is your name?: ")
+    bid = int(input("What is your bid?: $"))
+    auction_dict[name] = bid 
+    other_bidders = input("Are there any other bidders? Type \'yes\' or \'no\'. ")
+
+    if other_bidders == "yes":
+        clear()
+
+    elif other_bidders == "no":
+        more_bidders = False
+
+# Loop through dictionary and see who has highest bid 
+price = 1
+for key in auction_dict:
+    if auction_dict[key] > price:
+        winner_price = auction_dict[key]
+        winner_name = key
+
+print(f"The winner is {winner_name} with the bid of ${winner_price}")    
