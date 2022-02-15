@@ -1,0 +1,56 @@
+# Tu Feb 15, 2022
+# Day 10. (D10.106). Calculator - Final
+
+from art import logo 
+
+# Add
+def add(n1, n2):
+    """Adds n1 and n2. Both n1 and n2 are integer or float"""
+    return n1 + n2 
+
+# Substract
+def substract(n1, n2):
+    """Substracts n2 from n1. Both n1 and n2 are integer or float"""
+    return n1 - n2
+
+# Multiply
+def multiply(n1, n2):
+    """Multiplies n1 with n2. Both n1 and n2 are integer or float"""
+    return n1 * n2
+
+# Divide
+def divide(n1, n2):
+    """Divides n1 by n2. Both n1 and n2 are integer or float"""
+    return n1 / n2 
+
+# Create dictionary
+operations = { 
+    "+": add,
+    "-": substract,
+    "*": multiply,
+    "/": divide, 
+}
+
+def calculator(): 
+    """Calculator that can add, substract, divide and multiply"""
+    print(logo)
+    num1 = float(input("What's the first number?: "))
+    for symbol in operations:
+      print(symbol)
+    contin = True 
+    #Here we select "+"
+    while contin: 
+        operation_symbol = input("Pick an operation: ") 
+        num2 = float(input("What's the next number?: "))
+        calculation_function = operations[operation_symbol]
+        answer = calculation_function(num1, num2)
+        print(f"{num1} {operation_symbol} {num2} = {answer}")
+        cont_calculations = input(f"Type \'y\' to continue calcuating with {answer}, or type \'n\' to exit.: ")
+        if cont_calculations == "y":
+            contin = True
+            num1 = answer
+        elif cont_calculations == "n":
+            contin = False 
+            calculator() 
+
+calculator() 
