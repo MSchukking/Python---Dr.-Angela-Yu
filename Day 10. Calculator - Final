@@ -18,7 +18,6 @@ logo = """
 |_____________________|
 """
 
-
 # Add
 def add(n1, n2):
     """Adds n1 and n2. Both n1 and n2 are integer or float"""
@@ -70,6 +69,3 @@ def calculator():
             calculator() 
 
 calculator() 
-
-
-
