@@ -1,0 +1,42 @@
+# Th Feb 17, 2022
+# Day 12 (D12.120) - The number guessing game
+
+import random
+from art import logo
+from replit import clear
+
+#Number Guessing Game Objectives:
+
+# Include an ASCII art logo.
+# Allow the player to submit a guess for a number between 1 and 100.
+# Check user's guess against actual answer. Print "Too high." or "Too low." depending on the user's answer. 
+# If they got the answer correct, show the actual answer to the player.
+# Track the number of turns remaining.
+# If they run out of turns, provide feedback to the player. 
+# Include two different difficulty levels (e.g., 10 guesses in easy mode, only 5 guesses in hard mode).
+
+# Starting up: 
+clear() 
+print(logo)
+print("Welcome to the Number Guessing Game!")
+print("I\'m thinking of a number between 1 and 100.")
+RANDOM_NUMBER = random.randint(1, 100) # Create a random integer between 1 and 100, including 1 and 100 
+print(RANDOM_NUMBER)
+print(type(RANDOM_NUMBER))
+
+# Defining the level: 
+level = input("Choose a difficulty. Type \'easy\' or \'hard\': ")
+print(level)
+print(type(level))
+if level == "easy":
+    attempts = 10
+elif level == "hard":
+    attempts = 5
+print(f"You have {attempts} attempts remaining to guess the number")
+print(type(attempts))
+
+# Guessing
+guess = int(input("Make a guess: "))
+print(type(guess))
+
+# TOMORROW Next: Compare the guess with the RANDOM_NUMBER
