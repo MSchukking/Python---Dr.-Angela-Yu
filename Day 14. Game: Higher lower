@@ -1,0 +1,37 @@
+# Sa Feb 19, 2022
+# Day 14. Higher lower game 
+
+### WORK IN PROGRESS!!!! ### 
+
+# Import modules needed: 
+# from replit import clear 
+import random
+from art import logo
+from art import vs 
+from game_data import data # type(data) = list with 50 items 
+
+# Show logo 
+print(logo)
+
+# Chose two dictionaries from list "data" and remove them from the list:
+print(len(data))
+option_A = random.choice(data)
+option_B = random.choice(data)
+print(f"option_A is {option_A} with type: {type(option_A)}")
+print(f"optionB is {option_B} with type: {type(option_B)}")
+print(option_A)
+
+# Remove options from list so that they cannot show up again: 
+data.remove(option_A)
+data.remove(option_B)
+print(data)
+print(len(data))
+
+# Show option A: Name, occupation and country they are from 
+# Show VS logo
+# Show option B: 
+print(f"Compare A: {option_A['name']}, a {option_A['description']}, from {option_A['country']}. ")
+print(vs)
+print(f"Against B: {option_B['name']}, a {option_B['description']}, from {option_B['country']}. ")
+
+# 2. Compare the random number results
