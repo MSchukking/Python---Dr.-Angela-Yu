@@ -1,33 +1,34 @@
-# Mo Feb 28, 2022
+# Mo Feb 28, 2022 and Tu March 1, 2022
 # Day 16. OOP Coffee Machine
 
-# Goal. You do not toch any of the other files besides main.py
+# Goal. You do not touch any of the other files besides main.py
 # So don't touch money_machine.py, menu.py or coffee_maker.py
 # Treat them as an external library
 
 
-# Import Classes from packages/modules:
+# # Import Classes from packages/modules:
 from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
 
-# Create objects from the blueprints of the Classes
-menu = Menu()
-menu_item = MenuItem()
+# # Create objects from the blueprints of the Classes
 coffee_maker = CoffeeMaker()
 money_machine = MoneyMachine()
+menu = Menu()
 
-# ToDo 1. Print report:
-choice = input("What would you like? (espresso/latte/cappuccino?: ")
-if choice == "report":
+machine_is_on = True
 
+while machine_is_on:
+     choice = input(f"What would you like? {menu.get_items()}?: ").lower()
+     if choice == "off":
+         machine_is_on = False
 
+     elif choice == "report":
+         coffee_maker.report()
+         money_machine.report()
 
-# ToDo 2: Check resources sufficient?
-
-# ToDo 3: Process coins.
-
-# ToDo 4: Check transaction successful?
-
-# ToDo 5: Make Coffee.
+     elif choice == "espresso" or "latte" or "cappuccino":
+         drink = menu.find_drink(choice)
+         if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
+                 coffee_maker.make_coffee(drink)
