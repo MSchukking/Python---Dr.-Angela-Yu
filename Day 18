@@ -1,0 +1,33 @@
+# Fr Mar 4, 2022
+# Day 18
+
+# turtle documentation:
+# https://docs.python.org/3/library/turtle.html#turtle.right
+
+# import turtle
+from turtle import Turtle, Screen  # import class Turtle and Screen from module turtle
+
+# create turtle and change it appearance:
+tim = Turtle()  # create object from class Turtle
+tim.shape("turtle")  # change timmy's shape into a turtle
+tim.color("lime green")  # change timmy's color to green
+
+# make the turtle do certain things:
+# timmy_the_turtle.forward(100) # make the turtle move forward 100 paces
+# timmy_the_turtle.rt(90)  # turn south
+
+# D18.166 Turtle challenges:
+
+# draw a square:
+for activities in range(4):
+    tim.forward(100)
+    tim.rt(90)
+
+# D18.167
+
+
+# to keep the screen, and only let it disappear when we click on the screen:
+# this part of code needs to stay at the bottom of the code:
+# it needs to happen after we done all the stuff with turtle
+screen = Screen()
+screen.exitonclick() # create attribute exit_on_click in object screen
