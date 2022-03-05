@@ -1,16 +1,29 @@
-# Fr Mar 4, 2022
+# Fr Mar 4, 2022, Sa Mar 5, 2022
 # Day 18
 
 # turtle documentation:
 # https://docs.python.org/3/library/turtle.html#turtle.right
 
 # import turtle
-from turtle import Turtle, Screen  # import class Turtle and Screen from module turtle
+import random
+import turtle as t
+from turtle import Screen  # import class Turtle and Screen from module turtle
+t.colormode(255) # from 0 to 255
+
+def random_color():
+    """returns a random color using RGB"""
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    # Create a tuple that consists of the 3 integers above, and use this to color the turtle drawing
+    random_color = (r, g, b)
+    return random_color
 
 # create turtle and change it appearance:
-tim = Turtle()  # create object from class Turtle
+tim = t.Turtle()  # create object from class Turtle
 tim.shape("turtle")  # change timmy's shape into a turtle
-tim.color("lime green")  # change timmy's color to green
+tim.pensize(10)  # change pen size
+tim.speed(10)  # change the speed that the pen moves
 
 # make the turtle do certain things:
 # timmy_the_turtle.forward(100) # make the turtle move forward 100 paces
@@ -23,7 +36,70 @@ for activities in range(4):
     tim.forward(100)
     tim.rt(90)
 
-# D18.167
+# D18.168
+# Draw a dashed line:
+# for activities in range(10):
+#     tim.pendown()
+#     tim.forward(10)
+#     tim.penup()
+#     tim.forward(10)
+
+# D18.169
+# Draw a triangle, square, pentagon, hexagon, heptagon, octagon, nonagon and decagon:
+#
+# colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
+#
+# def color(x):
+#     tim.color(random.choice(colors))
+#
+# def draw_shape(x):
+#     for moves in range(x):
+#         angle = 360/x
+#         tim.forward(100)
+#         tim.rt(angle)
+#
+# for shape_side_n in range(3, 11):
+#     draw_shape(shape_side_n)
+#     color(shape_side_n)
+
+# # Draw a triangle, square, pentagon, hexagon, heptagon, octagon, nonagon and decagon:
+# colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
+# # sides = [3, 4, 5, 6, 7, 8, 9, 10] = range(3,11)  # the number of sides in the form
+# for x in range(3, 11):
+#     random_color = random.choice(colors)
+#     tim.color(random_color)
+#     for moves in range (x):
+    #         angle = 360/x
+    #         tim.forward(100)
+    #         tim.rt(angle)
+
+    # # D18.187
+    # # Draw a random walk:
+    # # ToDo 1: increase line thickness
+    # # ToDo 2: increase turtle speed
+    #
+    # colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
+    #
+random_distance = random.choice(range(1, 101)) # choice a random distance between 1 and 100
+turn = [0, 90, 180, 270] # derections the turtle can look
+#
+def random_walk(distance, turn):
+    tim.forward(distance)
+    tim.rt(turn)
+#
+#
+for activity in range(100):
+    random_distance = random.choice(range(1, 101))  # choice a random distance between 1 and 100
+    tim.color(random_color())  # change timmy's color to green
+    random_turn = random.choice(turn)
+    random_walk(random_distance, random_turn)
+
+
+# # D18.171
+# # Python Tuples
+# my_tuple = (1, 3, 8)
+# print(my_tuple[0])
+# print(type(my_tuple))
 
 
 # to keep the screen, and only let it disappear when we click on the screen:
