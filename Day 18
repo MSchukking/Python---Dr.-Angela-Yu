@@ -1,4 +1,4 @@
-# Fr Mar 4, 2022, Sa Mar 5, 2022
+# Fr Mar 4, Sa Mar 5, Su Mar 6, 2022
 # Day 18
 
 # turtle documentation:
@@ -8,102 +8,40 @@
 import random
 import turtle as t
 from turtle import Screen  # import class Turtle and Screen from module turtle
-t.colormode(255) # from 0 to 255
+
+t.colormode(255)  # from 0 to 255
+
 
 def random_color():
-    """returns a random color using RGB"""
+    """returns a random color using the RGB tuple"""
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
-    # Create a tuple that consists of the 3 integers above, and use this to color the turtle drawing
-    random_color = (r, g, b)
-    return random_color
+    color = (r, g, b)  # creates a tuple that consists of the 3 integers above
+    return color
+
 
 # create turtle and change it appearance:
 tim = t.Turtle()  # create object from class Turtle
 tim.shape("turtle")  # change timmy's shape into a turtle
-tim.pensize(10)  # change pen size
-tim.speed(10)  # change the speed that the pen moves
-
-# make the turtle do certain things:
-# timmy_the_turtle.forward(100) # make the turtle move forward 100 paces
-# timmy_the_turtle.rt(90)  # turn south
-
-# D18.166 Turtle challenges:
-
-# draw a square:
-for activities in range(4):
-    tim.forward(100)
-    tim.rt(90)
-
-# D18.168
-# Draw a dashed line:
-# for activities in range(10):
-#     tim.pendown()
-#     tim.forward(10)
-#     tim.penup()
-#     tim.forward(10)
-
-# D18.169
-# Draw a triangle, square, pentagon, hexagon, heptagon, octagon, nonagon and decagon:
-#
-# colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
-#
-# def color(x):
-#     tim.color(random.choice(colors))
-#
-# def draw_shape(x):
-#     for moves in range(x):
-#         angle = 360/x
-#         tim.forward(100)
-#         tim.rt(angle)
-#
-# for shape_side_n in range(3, 11):
-#     draw_shape(shape_side_n)
-#     color(shape_side_n)
-
-# # Draw a triangle, square, pentagon, hexagon, heptagon, octagon, nonagon and decagon:
-# colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
-# # sides = [3, 4, 5, 6, 7, 8, 9, 10] = range(3,11)  # the number of sides in the form
-# for x in range(3, 11):
-#     random_color = random.choice(colors)
-#     tim.color(random_color)
-#     for moves in range (x):
-    #         angle = 360/x
-    #         tim.forward(100)
-    #         tim.rt(angle)
-
-    # # D18.187
-    # # Draw a random walk:
-    # # ToDo 1: increase line thickness
-    # # ToDo 2: increase turtle speed
-    #
-    # colors = ["lime green", "DarkOliveGreen1", "DeepPink", "brown1", "aquamarine", "BlueViolet"]
-    #
-random_distance = random.choice(range(1, 101)) # choice a random distance between 1 and 100
-turn = [0, 90, 180, 270] # derections the turtle can look
-#
-def random_walk(distance, turn):
-    tim.forward(distance)
-    tim.rt(turn)
-#
-#
-for activity in range(100):
-    random_distance = random.choice(range(1, 101))  # choice a random distance between 1 and 100
-    tim.color(random_color())  # change timmy's color to green
-    random_turn = random.choice(turn)
-    random_walk(random_distance, random_turn)
+tim.pensize(1)  # change pen size
+tim.speed(100)  # change the speed that the pen moves
 
 
-# # D18.171
-# # Python Tuples
-# my_tuple = (1, 3, 8)
-# print(my_tuple[0])
-# print(type(my_tuple))
+# D18.172.
+# Make a Spirograph:
+def draw_spriograph(size_of_gap):  # size of gab will be the space inbetween circles drawn
+    """returns spirograph that stops when it reaches the first circle"""
+    for activities in range(int(360/ size_of_gap)):  # draw a circle repeatedly.
+        #  size_of_gap is a degree. It can be used to determine how many times to draw a circle
+        tim.color(random_color())  # chooses a different color for every circle
+        tim.setheading(tim.heading() + size_of_gap)  # tilts the circle every time
+        tim.circle(100)  # draw a circle with radius 100
 
+draw_spriograph(5)
 
 # to keep the screen, and only let it disappear when we click on the screen:
 # this part of code needs to stay at the bottom of the code:
-# it needs to happen after we done all the stuff with turtle
+# it needs to happen after we're done with all the stuff with turtle
 screen = Screen()
-screen.exitonclick() # create attribute exit_on_click in object screen
+screen.exitonclick()  # create attribute exit_on_click in object screen
