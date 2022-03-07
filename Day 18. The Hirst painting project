@@ -1,0 +1,110 @@
+# Su Mar 6 and Mo Mar 7, 2022
+# Day 18: The Hirst Painting Project
+
+# Project Objectives:
+# Draw a Hirst Painting which is worth $1,000,000:
+
+# ToDo 1: GOOGLE HIRST'S SPOT PAINTING, CHOSE 1 AND SAVE IT AS IMAGE.JPG:
+# drag 'image.jpg' in PyCharm in Project "The Hirst Painting Project"
+
+
+# ToDo 2: CREATE A LIST OF THE COLORS FROM THE PAINTING:
+# Each item in the list should be a tuple
+# Use colorgram.py: a Python library that lets you extract colors from images
+# documentation: https://pypi.org/project/colorgram.py/
+
+# # Install colorgram.py - Preferences - Project - Project interpreter - etc
+# import colorgram
+#
+# # extract colors from image.jpg
+# colors = colorgram.extract('image.jpg', 30)
+# print(colors)  # type list, type of items in the list is 'colorgram.colorgram.Color' -> this is not what you want
+#
+#
+# # write a for loop that taps into each of the colors in the list and changes into the correct type:
+# rgb_colors = []  # create an empty list
+# for color in colors:
+#     r = color.rgb.r
+#     g = color.rgb.g
+#     b = color.rgb.b
+#     new_color = (r, g, b)  # create a tuple
+#     rgb_colors.append(new_color)
+#
+# print(rgb_colors)  # in format tuple with r, g and b value that we can use
+
+# copy rgb_color list and test if they are correct using: https://www.w3schools.com/colors/colors_rgb.asp
+# the first two colors were close to white and probably the background. We remove these.
+# the rest of the colors saved in a list
+# comment out the previous code, cause not needed to make the painting.
+
+import turtle as t
+from turtle import Screen  # import class Turtle and Screen from module turtle
+t.colormode(255)  # to produce RGB colors
+
+hints_colors = [(189, 17, 44), (243, 232, 65), (252, 236, 241), (212, 236, 243), (197, 74, 31), (220, 65, 106),
+                (196, 175, 16), (16, 124, 174), (107, 182, 209), (11, 143, 88), (11, 167, 215), (241, 232, 2),
+                (210, 152, 95), (23, 39, 77), (188, 41, 62), (76, 175, 94), (36, 44, 113), (217, 68, 49),
+                (218, 130, 155), (124, 185, 120), (235, 164, 184), (5, 59, 39), (146, 209, 221), (7, 95, 55),
+                (169, 27, 25), (4, 86, 111), (234, 171, 164), (161, 212, 178), (189, 17, 44), (243, 232, 65),
+                (252, 236, 241), (212, 236, 243), (197, 74, 31), (220, 65, 106),
+                (196, 175, 16), (16, 124, 174), (107, 182, 209), (11, 143, 88), (11, 167, 215),
+                (241, 232, 2),
+                (210, 152, 95), (23, 39, 77), (188, 41, 62), (76, 175, 94), (36, 44, 113), (217, 68, 49),
+                (218, 130, 155), (124, 185, 120), (235, 164, 184), (5, 59, 39), (146, 209, 221), (7, 95, 55),
+                (169, 27, 25), (4, 86, 111), (234, 171, 164), (161, 212, 178), (189, 17, 44), (243, 232, 65),
+                (252, 236, 241), (212, 236, 243), (197, 74, 31), (220, 65, 106),
+                (196, 175, 16), (16, 124, 174), (107, 182, 209), (11, 143, 88), (11, 167, 215), (241, 232, 2),
+                (210, 152, 95), (23, 39, 77), (188, 41, 62), (76, 175, 94), (36, 44, 113), (217, 68, 49),
+                (218, 130, 155), (124, 185, 120), (235, 164, 184), (5, 59, 39), (146, 209, 221), (7, 95, 55),
+                (169, 27, 25), (4, 86, 111), (234, 171, 164), (161, 212, 178), (189, 17, 44), (243, 232, 65),
+                (252, 236, 241), (212, 236, 243), (197, 74, 31), (220, 65, 106),
+                (196, 175, 16), (16, 124, 174), (107, 182, 209), (11, 143, 88), (11, 167, 215), (241, 232, 2),
+                (210, 152, 95), (23, 39, 77), (188, 41, 62), (76, 175, 94), (36, 44, 113), (217, 68, 49),
+                (218, 130, 155), (124, 185, 120), (235, 164, 184), (5, 59, 39), (146, 209, 221), (7, 95, 55),
+                (169, 27, 25), (4, 86, 111), (234, 171, 164), (161, 212, 178)]
+x = -250  # tim's starting x position
+y = -225  # tim's starting y position
+
+# ToDo 3: RECREATE THE HIRST'S PAINTING:
+# Turtle will draw 10 by 10 spots.
+# Each dot will be around 20 in size and with spaces in between of 50
+
+# turtle documentation:
+# https://docs.python.org/3/library/turtle.html#turtle.right
+
+
+def stamp_dots(color):
+    """Returns a stamp of size 20 of "color", then moves 50 spaces without painting"""
+    tim.dot(20, color)
+    tim.forward(50)
+
+def new_hints_color():
+    """Returns a new color from the hints_color list"""
+    for color in hints_colors:
+        hints_colors.remove(color)
+        return color
+
+
+# create turtle tim and change its appearance:
+tim = t.Turtle()  # create object from class Turtle
+tim.shape("turtle")  # change timmy's shape into a turtle
+tim.pensize(1)  # change pen size
+tim.speed(5)  # change the speed that the pen moves
+
+# move turtle tim to the bottom left of the screen without drawing:
+tim.penup()
+tim.goto(x, y)
+
+# code to make 10 rows of 10 dots:
+for rows in range(10):
+    for activities in range(10):
+        stamp_dots(new_hints_color())
+    y += 50
+    tim.goto(x, y)
+tim.hideturtle()  # hide tim the turtle after drawing the painting
+
+# to keep the screen, and only let it disappear when we click on the screen:
+# this part of code needs to stay at the bottom of the code:
+# it needs to happen after we're done with all the stuff with turtle
+screen = Screen()
+screen.exitonclick()  # create attribute exit_on_click in object screen
