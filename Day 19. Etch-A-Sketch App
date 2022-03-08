@@ -1,0 +1,43 @@
+# mo mar 7, tu mar 8 2022
+# day 19. Make an Etch-A-Sketch App:
+
+# Project objectives:
+# Write Python code for an App, which mimicks Etch-A-Sketch that you might know from your childhood. 
+
+from turtle import Turtle, Screen
+
+tim = Turtle()  # create tim object the turtle
+screen = Screen()
+
+
+def move_forwards():
+    """moves tim the turtle 10 spaces forward"""
+    tim.forward(10)
+
+def move_backwards():
+    """moves tim the turtle 10 spaces back"""
+    tim.backward(10)
+
+def move_counter_clockwise():
+    """moves tim the turtle in a circle counter clockwise"""
+    tim.circle(100, 10)
+
+def move_clockwise():
+    """moves tim the turtle in a circle clockwise"""
+    tim.circle(-100, 10)
+
+def clear_screen():
+    """deletes tim's drawing from the screen and puts tim back at its original position"""
+    tim.clear()
+    tim.penup()
+    tim.home()
+    tim.pendown()
+
+screen.listen()  # start listening for events on keyboard
+screen.onkey(move_forwards, "w")  # NOTE! need to click on screen to make it work!
+screen.onkey(move_backwards, "s")  # NOTE! don't add parentheses to a function in a function.
+screen.onkey(move_counter_clockwise, "a")
+screen.onkey(move_clockwise, "d")
+screen.onkey(clear_screen, "c")
+
+screen.exitonclick()  # screen stays until you click
