@@ -1,0 +1,44 @@
+# tu mar 8 and we mar 9, 2022
+# PROJECT OBJECTIVE: write the code for a turtle racing game
+
+from turtle import Turtle, Screen, _Screen
+import random
+
+is_race_on = False
+screen = Screen()  # create screen for the turtles to appear
+screen.setup(width=500, height=400)  # make screen bigger
+user_bet = screen.textinput(title="Make your bet", prompt="Which turtle will win the race? Enter a color: ").lower()
+print(user_bet)
+colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+all_turtles = []
+
+# create 6 turtles and adjust their appearances and put them at a position on the left side of the screen:
+x = -225
+y = 150
+for index in range(0, 6):  # goes from index 0 to 5.
+    # NOTE! cannot write 'for color in colors:', because index needs to be an integer in 'tim.color(colors[index])
+    new_turtle = Turtle(shape="turtle")
+    new_turtle.penup()
+    new_turtle.goto(x, y)
+    new_turtle.color(colors[index])
+    all_turtles.append(new_turtle)  # add each new turtle to our all_turtles list
+    y -= 50
+
+if user_bet:  # check if the bet is made. If so turn the race on
+    is_race_on = True
+# and we are off to the races:
+# movement have to be randomised. each step needs to be a random number so that they don't go to the end immidiately
+
+while is_race_on:
+    for turtle in all_turtles:
+        if turtle.xcor() > 200:
+            is_race_on = False  # stops the race when the first turtle reaches xcor 225
+            winning_color = turtle.pencolor()
+            if winning_color == user_bet:
+                print(f"You\'ve won! The {winning_color} turtle is the winner! ")
+            elif winning_color != user_bet:
+                print(f"You lose. The {winning_color} turtle is the winner")
+        random_distance = random.randint(0, 10)  # this includes 0 and 10
+        turtle.forward(random_distance)  # gives each turtle a random step size for each step they take 
+
+screen.exitonclick()  # screen stays until you click
