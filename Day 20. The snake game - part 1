@@ -31,6 +31,78 @@ while game_is_on:
     time.sleep(0.1)  # delay for 0.1 second
 
     snake.move()
+    
+    
+# snake.py:
+from turtle import Turtle
+
+# writing CONSTANTS as variables is good, because then you do not have to dig through the code to change them
+STARTING_POSITIONS = [(0,0), (-20, 0), (-40, 0)]
+MOVE_DISTANCE = 20
+UP = 90
+DOWN = 270
+LEFT = 180
+RIGHT = 0
+
+
+class Snake:
+
+    def __init__(self):
+        self.all_segments = []
+        for position in STARTING_POSITIONS:
+            new_segment = Turtle(shape="square")
+            new_segment.penup()
+            new_segment.goto(position)
+            new_segment.color("white")
+            self.all_segments.append(new_segment)
+
+    # def __init__(self):
+    #     # ToDo 1: CREATE THE SNAKE BODY
+    #     # create a snake consisting of 3 squared snakes, each 20 by 20:
+    #     self.all_segments = []  # create an empty list
+    #     x = 0
+    #     y = 0
+    #     for index in range(0, 3):  # goes from index 0 to 2
+    #         new_segment = Turtle(shape="square")
+    #         new_segment.penup()
+    #         new_segment.goto(x, y)
+    #         new_segment.color("white")
+    #         self.all_segments.append(new_segment)
+    #         x -= 20
+
+    def move(self):
+        # turning snake left:
+        # 3d segment goes were 2nd segment used to be
+        # 2nd segment goes were 1st segment used to be
+        # 1st segment turns left
+        for segment_number in range(len(self.all_segments) - 1, 0, -1):  # range(start=len(all_segments)-1, stop=0, step=-1)
+            # going from segment#3 to segment#0
+            new_x = self.all_segments[segment_number - 1].xcor()
+            new_y = self.all_segments[segment_number - 1].ycor()
+            self.all_segments[segment_number].goto(new_x, new_y)
+        self.all_segments[0].forward(MOVE_DISTANCE)
+
+    def up(self):
+        if self.all_segments[0].heading() != DOWN:  # snake is not allowed to turn around
+            self.all_segments[0].setheading(UP)
+
+    def down(self):
+        if self.all_segments[0].heading() != UP:  # snake is not allowed to turn around
+            self.all_segments[0].setheading(DOWN)
+
+    def left(self):
+        if self.all_segments[0].heading() != RIGHT:  # snake is not allowed to turn around
+            self.all_segments[0].setheading(LEFT)
+
+    def right(self):
+        if self.all_segments[0].heading() != LEFT:  # snake is not allowed to turn around
+            self.all_segments[0].setheading(RIGHT)
+
+
+
+
+
+    
 
 # Day 21 - the snake game - part 2
 # ToDo 4: DETECT COLLISION WITH FOOD
