@@ -1,0 +1,45 @@
+# we mar 9 and we mar 10, 2022
+# day 20 - the snake game - part 1
+# OBJECTIVE: Create the Nokia snake game
+
+from turtle import Screen, Turtle
+from snake import Snake
+import time  # this time module will help to slow down what is happening
+
+# create screen and adjust its appearance:
+screen = Screen()
+screen.setup(width=600, height=600)  # set the screens sizes
+screen.bgcolor("black")  # set the screens background color
+screen.title("Snake Game")  # set the title at the top of the screen
+# make the snake move smoothly as one piece:
+screen.tracer(0)  # turns tracer off -> now screen.update() can be used to tell the program when to refresh the screen
+# without screen.update() we will only see a black screen
+
+snake = Snake()
+
+# ToDo 3: CONTROL THE SNAKE
+screen.listen()  # start listening for keystrokes
+screen.onkey(key="Up", fun=snake.up)
+screen.onkey(key="Down", fun=snake.down)
+screen.onkey(key="Left", fun=snake.left)
+screen.onkey(key="Right", fun=snake.right)
+
+# ToDo 2: MOVE THE SNAKE
+game_is_on = True
+while game_is_on:
+    screen.update()  # refresh the screen
+    time.sleep(0.1)  # delay for 0.1 second
+
+    snake.move()
+
+# Day 21 - the snake game - part 2
+# ToDo 4: DETECT COLLISION WITH FOOD
+# Put food on the screen and detect collision of the food
+# ToDo 5: CREATE SCOREBOARD
+# Learn to write text in our program. Once the snake hits the food, the score updates
+# ToDo 6: DETECT COLLISION WITH WALL
+# Show game over on screen + Snake stops moving
+# ToDo 7: DETECT COLLISION WITH TAIL
+# When the head collides with the body of the snake it is Game Over
+
+screen.exitonclick()  # screen only disappears when you click
