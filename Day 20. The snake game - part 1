@@ -32,7 +32,9 @@ while game_is_on:
 
     snake.move()
     
-    
+screen.exitonclick()  # screen only disappears when you click
+   
+   
 # snake.py:
 from turtle import Turtle
 
@@ -114,4 +116,4 @@ class Snake:
 # ToDo 7: DETECT COLLISION WITH TAIL
 # When the head collides with the body of the snake it is Game Over
 
-screen.exitonclick()  # screen only disappears when you click
+
