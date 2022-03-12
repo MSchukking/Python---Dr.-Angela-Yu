@@ -1,0 +1,26 @@
+# sa mar 12, 2022
+# day 21 - class inheritance 
+
+class Animal:
+    def __init__(self):
+        self.num_eyes = 2
+
+    def breathe(self):
+        print("Inhale, exhale.")
+
+class Fish(Animal):
+
+    def __init__(self):
+        super().__init__()  # allows anything from the superclass Animal() to be inheritted in the class Fish
+
+    def breathe(self):  # we want it to have it the same functionality as the superclass + something extra:
+        super().breathe()  # everything from the breath() method of the superclass
+        print("doing this underwater.")  # extra after the superclass breath() method 
+
+    def swim(self):
+        print("moving in water.")
+
+nemo = Fish()
+nemo.swim()
+nemo.breathe()
+print(nemo.num_eyes)
