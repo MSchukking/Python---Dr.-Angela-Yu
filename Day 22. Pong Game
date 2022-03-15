@@ -1,0 +1,82 @@
+# tu mar 15, 2022
+# day 22. build pong: the famous arcade game
+# OBJECTIVE: build the ping pong game
+
+
+# DONE - todo 1: create the screen
+# DONE - todo 2: create and move a paddle
+# todo 3: create another paddle
+# todo 4: create a ball and move it constantly accross the screen
+# todo 5: detect collision with wall and bounce back
+# todo 6: detect collision with paddle to make it bounce back
+# todo 7: score: detect when paddle misses
+# todo 8: keep score
+
+
+from turtle import Screen
+from paddle import Paddle
+import time  # this time module will help to slow down what is happening
+
+# todo 1: create the screen and adjust its appearance:
+screen = Screen()
+screen.setup(width=600, height=600)  # change screen size
+screen.bgcolor("black")  # set screen background to black
+screen.title("Pong Game")  # set the title at the top of the screen
+
+# make the game move smoothly:
+screen.tracer(0)  # turns tracer off --> now screen.update() can be used to tell the program to refresh the screen
+# without screen.update() we will only see a black screen cause it is never updated
+
+# todo 2a: create a paddle:
+paddle = Paddle()
+
+# todo 2b: move the paddle:
+screen.listen()  # start listening for keystrokes
+screen.onkey(key="Up", fun=paddle.up)
+screen.onkey(key="Down", fun=paddle.down)
+
+game_is_on = True
+while game_is_on:
+    screen.update()  # refreshes the screen (only works when screen.tracer(0) in code before)
+    time.sleep(0.1)  # delays what is happening for 0.1 second
+
+    paddle.move()
+
+
+screen.exitonclick()  # screen only disappears when you click
+
+
+paddle.py
+
+from turtle import Turtle
+
+# CONSTANT VARIABLES:
+START_X = -280
+START_Y = 30
+UP = 90  # faces 90 degrees
+DOWN = 270  # faces 270 degrees
+MOVE_DISTANCE = 20  # determines the moving speed of the paddle
+
+
+class Paddle:
+    """contains anything paddle related: its appearance and behaviour"""
+
+    def __init__(self):
+        """initialize a new paddle object"""
+        self.paddle = Turtle(shape="square")  # a turtle square is 20 by 20
+        self.paddle.shapesize(stretch_wid=1, stretch_len=3)  # increase len x3
+        self.paddle.penup()
+        self.paddle.goto(START_X, START_Y)
+        self.paddle.color("white")
+        self.paddle.setheading(UP)  # so it starts with moving up
+
+    def move(self):
+        self.paddle.forward(MOVE_DISTANCE)
+
+    def up(self):
+        """moves paddle up"""
+        self.paddle.setheading(UP)
+
+    def down(self):
+        """moves paddle down"""
+        self.paddle.setheading(DOWN)
