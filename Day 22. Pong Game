@@ -1,4 +1,4 @@
-# tu mar 15, 2022, we mar 16, 2022
+# tu mar 15, we mar 16, th mar 17, 2022
 # day 22. build pong: the famous arcade game
 # OBJECTIVE: build the ping pong game
 
@@ -15,49 +15,69 @@
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from score import Scoreboard
 import time  # this time module will help to slow down what is happening
 
 
 # todo 1: create the screen and adjust its appearance:
 screen = Screen()
-screen.setup(width=600, height=600)  # change screen size
+screen.setup(width=800, height=600)  # change screen size
 screen.bgcolor("black")  # set screen background to black
 screen.title("Pong Game")  # set the title at the top of the screen
 
 # make the game move smoothly:
 screen.tracer(0)  # turns tracer off --> now screen.update() can be used to tell the program to refresh the screen
-# without screen.update() we will only see a black screen cause it is never updated
+# without screen.update() we will only see a black screen because it is never updated
 
 # todo 2a: create a paddle:
-paddle = Paddle(start_x=-280, start_y=30)
+l_paddle = Paddle(start_x=-350, start_y=30)
 # todo 3: create another paddle
-paddle2 = Paddle(start_x=270, start_y=30)
+r_paddle = Paddle(start_x=350, start_y=30)
 
 # todo 4: create a ball and move it constantly across the screen
 ball = Ball()
 
+# todo 7: score: detect when paddle misses
+# todo 8: keep score
+scoreboard = Scoreboard()
+
 # todo 2b: move the paddle:
 screen.listen()  # start listening for keystrokes
-screen.onkey(key="Up", fun=paddle.up)
-screen.onkey(key="Down", fun=paddle.down)
+screen.onkey(key="w", fun=l_paddle.up)
+screen.onkey(key="s", fun=l_paddle.down)
+screen.onkey(key="Up", fun=r_paddle.up)
+screen.onkey(key="Down", fun=r_paddle.down)
+
 
 game_is_on = True
 while game_is_on:
-    screen.update()  # refreshes the screen (only works when screen.tracer(0) in code before)
+    screen.update()  # refreshes the screen (only works when screen.tracer(0) is in code before)
     time.sleep(0.1)  # delays what is happening for 0.1 second
 
-    paddle.move()
+    l_paddle.move()
+    r_paddle.move()
     ball.move()  # move the ball in constant speed
 
-# todo 5: detect collision with wall and bounce back
-    if ball.ycor() == 280 or ball.ycor() == -280:
-        heading_after_wall = 360 - ball.heading()  # move the ball the opposite direction of where it was heading
-        ball.setheading(heading_after_wall)
+    # todo 5: detect collision with wall and bounce back
+    if ball.ycor() > 300 or ball.ycor() < -300:
+        """ball needs to bounce"""
+        print("hit wall")
+        ball.change_direction()
 
-    # # # todo 6: detect collision with paddle to make it bounce back
-    # if paddle.distance(ball) < 15:  # ball is 10 by 10 so distance 15 works well
-    #     new_heading = 360 - ball.heading()  # change heading of ball in opposite site
-    #     ball.setheading(new_heading)
+    # todo 6: detect collision with paddle to make it bounce back
+    if l_paddle.distance(ball) < 15 or r_paddle.distance(ball) < 15:  # ball is 10 by 10 so distance 15 works well
+        print("hit paddle")
+        ball.change_direction()
+
+    if ball.xcor() < -430:
+        scoreboard.update_score_left()
+        ball.clear()
+        ball = Ball()
+
+    if ball.xcor() > 430:
+        scoreboard.update_score_right()
+        ball.clear()
+        ball = Ball()
 
 screen.exitonclick()  # screen only disappears when you click
 
@@ -72,13 +92,14 @@ DOWN = 270  # faces 270 degrees
 MOVE_DISTANCE = 20  # determines the moving speed of the paddle
 
 
-class Paddle:
+class Paddle(Turtle):  # inherit from superclass Turtle
     """contains anything paddle related: its appearance and behaviour"""
 
     def __init__(self, start_x, start_y):
         """initialize a new paddle object"""
+        super().__init__()  # allows everything from the superclass Turtle to be inherited
         self.paddle = Turtle(shape="square")  # a turtle square is 20 by 20
-        self.paddle.shapesize(stretch_wid=1, stretch_len=3)  # increase len x3
+        self.paddle.shapesize(stretch_wid=1, stretch_len=5)  # increase len x5 (a turtle is 20 by 20)
         self.paddle.penup()
         self.paddle.goto(start_x, start_y)
         self.paddle.color("white")
@@ -101,14 +122,15 @@ class Paddle:
 # todo 4: create a ball and move it constantly across the screen
 
 from turtle import Turtle
+import random
 
 
 UP = 90  # faces 90 degrees
 LEFT = 180  # faces 180 degrees
 DOWN = 270  # faces 270 degrees
 MOVE_DISTANCE = 20  # determines the moving speed of the paddle
-START_X = 260
-START_Y = 10
+START_X = 0
+START_Y = 0
 
 
 class Ball(Turtle):  # class Ball inherits from superclass Turtle
@@ -121,11 +143,67 @@ class Ball(Turtle):  # class Ball inherits from superclass Turtle
         self.shape("circle")
         self.penup()  # do not let the ball leave a pen track
         self.goto(START_X, START_Y)  # start point of the ball
-        self.shapesize(stretch_len=0.5, stretch_wid=0.5)  # normally turtle is 20 by 20, now you multiply 0.5 = 10 by 10
+        self.shapesize(stretch_len=1, stretch_wid=1)  # normally turtle is 20 by 20
         self.color("white")
         self.speed("normal")  # normal speed is 6, fastest is 0, slowest is 1
-        self.setheading(LEFT)  # so it starts with moving towards the paddle
+        random_direction = random.randint(0, 360)  # each new ball starts moving in a random direction
+        self.setheading(random_direction)
 
     def move(self):
         """moves the ball constantly across the screen"""
         self.forward(MOVE_DISTANCE)
+
+    def change_direction(self):
+        new_heading = 360 - self.heading()
+        self.setheading(new_heading)
+        self.forward(MOVE_DISTANCE)
+
+
+# score.py
+
+# todo 7: score: detect when paddle misses
+# todo 8: keep score
+
+from turtle import Turtle
+
+# constant variables
+ALIGNMENT = "center"
+FONT = ("Courier", 18, "normal")  # Courier is a good letter type for video games
+LOCATION = (0, 280)
+MAXIMUM_POINTS = 10
+
+
+class Scoreboard(Turtle):  # inherits from superclass Turtle
+    """a turtle that keeps track of the score and displays the score in the program"""
+
+    def __init__(self):
+        """initializes a new scoreboard object"""
+        super().__init__()  # inherits from superclass Turtle
+        self.score_left = 0
+        self.score_right = 0
+        self.display_score()
+
+    def display_score(self):
+        """displaying sum of points at the top of the screen"""
+        self.goto(LOCATION)
+        self.hideturtle()  # hide the turtle, otherwise you see the turtle underneath the text
+        self.color("white")
+        self.write(f"SCORE = {self.score_left} | {self.score_right}", align=ALIGNMENT, font=FONT)
+
+    def update_score_left(self):
+        """adds a point to "self.score_left" and displays new score"""
+        self.score_left += 1
+        self.clear()
+        self.display_score()
+
+    def update_score_right(self):
+        """adds a point to "self.score_right" and displays new score"""
+        self.score_right += 1
+        self.clear()
+        self.display_score()
+
+    def game_over(self):
+        """writes who is the winner in the screen after maximum points is reached"""
+        self.goto(0, 0)  # in center of the screen
+        self.write("GAME OVER!", align=ALIGNMENT, font=FONT)
+
