@@ -1,23 +1,17 @@
-# tu mar 15, we mar 16, th mar 17, 2022
+# tu mar 15, we mar 16, th mar 17, fr mar 18, 2022
 # day 22. build pong: the famous arcade game
 # OBJECTIVE: build the ping pong game
 
-# DONE - todo 1: create the screen
-# DONE - todo 2: create and move a paddle
-# DONE - todo 3: create another paddle
-# DONE - todo 4: create a ball and move it constantly across the screen
-# todo 5: detect collision with wall and bounce back
-# todo 6: detect collision with paddle to make it bounce back
-# todo 7: score: detect when paddle misses
-# todo 8: keep score
+# this code consists of: main.py, paddle.py, ball.py and score.py
 
+
+# main.py: 
 
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
 from score import Scoreboard
 import time  # this time module will help to slow down what is happening
-
 
 # todo 1: create the screen and adjust its appearance:
 screen = Screen()
@@ -31,6 +25,7 @@ screen.tracer(0)  # turns tracer off --> now screen.update() can be used to tell
 
 # todo 2a: create a paddle:
 l_paddle = Paddle(start_x=-350, start_y=30)
+
 # todo 3: create another paddle
 r_paddle = Paddle(start_x=350, start_y=30)
 
@@ -48,27 +43,29 @@ screen.onkey(key="s", fun=l_paddle.down)
 screen.onkey(key="Up", fun=r_paddle.up)
 screen.onkey(key="Down", fun=r_paddle.down)
 
-
 game_is_on = True
 while game_is_on:
     screen.update()  # refreshes the screen (only works when screen.tracer(0) is in code before)
     time.sleep(0.1)  # delays what is happening for 0.1 second
+    r_paddle = r_paddle
 
-    l_paddle.move()
-    r_paddle.move()
     ball.move()  # move the ball in constant speed
 
     # todo 5: detect collision with wall and bounce back
     if ball.ycor() > 300 or ball.ycor() < -300:
         """ball needs to bounce"""
-        print("hit wall")
-        ball.change_direction()
+        ball.bounce_wall()
 
-    # todo 6: detect collision with paddle to make it bounce back
-    if l_paddle.distance(ball) < 15 or r_paddle.distance(ball) < 15:  # ball is 10 by 10 so distance 15 works well
-        print("hit paddle")
-        ball.change_direction()
+    # todo 6: detect collision with paddle to make it bounce back:
+    # NOTE: if l_paddle.distance(ball) < 15 or r_paddle.distance(ball) < 15:  # ball is 20 x 20, paddle.distance(ball)
+    # measures distance from ball center to paddle center which is probably > 15. instead you need to measure it like
+    # this:
+    if ball.distance(l_paddle) < 50 and ball.xcor() < -335 or ball.distance(r_paddle) < 50 and ball.xcor() > 335:
+        """ball bounce from the paddle in its opposite direction"""
+        ball.bounce_paddle()
 
+    # todo 7: score: detect when paddle misses
+    # todo 8: keep score
     if ball.xcor() < -430:
         scoreboard.update_score_left()
         ball.clear()
@@ -82,7 +79,7 @@ while game_is_on:
 screen.exitonclick()  # screen only disappears when you click
 
 
-# paddle.py
+# paddle.py:
 
 from turtle import Turtle
 
@@ -98,26 +95,29 @@ class Paddle(Turtle):  # inherit from superclass Turtle
     def __init__(self, start_x, start_y):
         """initialize a new paddle object"""
         super().__init__()  # allows everything from the superclass Turtle to be inherited
-        self.paddle = Turtle(shape="square")  # a turtle square is 20 by 20
-        self.paddle.shapesize(stretch_wid=1, stretch_len=5)  # increase len x5 (a turtle is 20 by 20)
-        self.paddle.penup()
-        self.paddle.goto(start_x, start_y)
-        self.paddle.color("white")
-        self.paddle.setheading(UP)  # so it starts with moving up
+        self.shape("square")  # a turtle square is 20 by 20
+        self.shapesize(stretch_wid=1, stretch_len=5)  # increase len x5 (a turtle is 20 by 20)
+        self.penup()
+        self.setposition(start_x, start_y)
+        self.color("white")
+        self.setheading(UP)  # so it starts with moving up
 
     def move(self):
-        self.paddle.forward(MOVE_DISTANCE)
+        """moves paddle with the speed "MOVE_DISTANCE"""
+        self.forward(MOVE_DISTANCE)
 
     def up(self):
         """moves paddle up"""
-        self.paddle.setheading(UP)
+        self.setheading(UP)
+        self.move()
 
     def down(self):
         """moves paddle down"""
-        self.paddle.setheading(DOWN)
+        self.setheading(DOWN)
+        self.move()
 
 
-# ball.py
+# ball.py:
 
 # todo 4: create a ball and move it constantly across the screen
 
@@ -128,7 +128,7 @@ import random
 UP = 90  # faces 90 degrees
 LEFT = 180  # faces 180 degrees
 DOWN = 270  # faces 270 degrees
-MOVE_DISTANCE = 20  # determines the moving speed of the paddle
+MOVE_DISTANCE = 10  # determines the moving speed of the ball
 START_X = 0
 START_Y = 0
 
@@ -145,21 +145,36 @@ class Ball(Turtle):  # class Ball inherits from superclass Turtle
         self.goto(START_X, START_Y)  # start point of the ball
         self.shapesize(stretch_len=1, stretch_wid=1)  # normally turtle is 20 by 20
         self.color("white")
+        self.moving_speed = MOVE_DISTANCE  # determines moving speed at the start of a new ball
         self.speed("normal")  # normal speed is 6, fastest is 0, slowest is 1
         random_direction = random.randint(0, 360)  # each new ball starts moving in a random direction
         self.setheading(random_direction)
 
     def move(self):
         """moves the ball constantly across the screen"""
-        self.forward(MOVE_DISTANCE)
+        self.forward(self.moving_speed)
 
-    def change_direction(self):
+    def bounce_wall(self):
+        """change the direction of the ball after it collides with the wall"""
         new_heading = 360 - self.heading()
         self.setheading(new_heading)
-        self.forward(MOVE_DISTANCE)
+        self.move()
+
+    def bounce_paddle(self):
+        """change direction of the ball once it touches a paddle. (360 - self.heading() resulted in the ball always
+        bouncing off the screen. Adding 180 results the ball to stay in the screen and bounce of the paddle in the
+        opposite direction"""
+        ball_heading = self.heading() + 180
+        self.setheading(ball_heading)
+        self.move()
+        self.increase_ball_speed()
+
+    def increase_ball_speed(self):
+        """increases the ball speed everytime the ball hits a paddle"""
+        self.moving_speed += 5
 
 
-# score.py
+# score.py:
 
 # todo 7: score: detect when paddle misses
 # todo 8: keep score
@@ -206,4 +221,3 @@ class Scoreboard(Turtle):  # inherits from superclass Turtle
         """writes who is the winner in the screen after maximum points is reached"""
         self.goto(0, 0)  # in center of the screen
         self.write("GAME OVER!", align=ALIGNMENT, font=FONT)
-
