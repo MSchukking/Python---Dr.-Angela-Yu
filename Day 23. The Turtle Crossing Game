@@ -1,0 +1,171 @@
+# sa mar 19, 2022
+# day 23
+# OBJECTIVE: write The Turtle Crossing Game
+import random
+import time
+from turtle import Screen
+from player import Player
+from car_manager import CarManager
+from scoreboard import Scoreboard
+
+
+screen = Screen()  # create screen
+screen.setup(width=600, height=600)
+screen.title("The Turtle Crossing Game")
+screen.tracer(0)  # turn of tracer, the screen we see only updates when screen.update() is in the code
+
+turtle = Player()
+car = CarManager()
+score = Scoreboard()
+
+
+# move turtle forwards when you press the "Up" key. It can only move forwards, not back, left or right.
+screen.listen()  # screen starts listening to keystrokes
+screen.onkey(key="Up", fun=turtle.move)
+
+game_is_on = True
+create_car = [True, False, False, False, False, False]  # determines when a car is created
+cars = [car]
+
+while game_is_on:
+
+    do_create_car = random.choice(create_car)
+    if do_create_car:
+        car = CarManager()
+        cars.append(car)
+        for car in cars:
+            car.move()
+
+    time.sleep(0.1)  # the code only runs every 0.1 seconds: while loop refreshes every 0.1 seconds
+    screen.update()
+
+    # when the turtle hits the top edge of the screen, it moves back to the original position and the player levels up.
+    # On the next level, the car speed increases
+    if turtle.ycor() > 280:
+        turtle.turtle_crossed()
+        score.update_level()
+        for car in cars:
+            car.increase_speed_cars()
+
+    for car in cars:
+        car.move()
+
+screen.exitonclick()
+
+
+# carmanager.py
+
+import random
+from random import Random
+from turtle import Turtle
+
+COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
+STARTING_MOVE_DISTANCE = 5
+MOVE_INCREMENT = 10
+START_X = 300  # starting x position of car object
+LEFT = 180  # facing left is 180 degrees
+
+cars = []
+
+
+class CarManager(Turtle):  # inherits from superclass Turtle
+    """generates all the random cars and moves them across the screen"""
+
+    def __init__(self):
+        """initializes the car object"""
+        super().__init__()  # inherits from superclass Turtle
+        self.shape("square")
+        self.color(random.choice(COLORS))
+        self.shapesize(stretch_wid=1, stretch_len=2)  # turtle is 20x20, this makes 40x20
+        self.penup()  # makes that the car won't draw a line
+        self.setheading(LEFT)  # moves car to the left
+        start_y = random.randint(-300, 300)  # creates a random number between -300 and 300, including -300 and 300
+        self.goto(START_X, start_y)
+        self.moving_distance = STARTING_MOVE_DISTANCE
+        self.move()
+
+    def move(self):
+        """moves car object forward in speed "STARTING_MOVE_DISTANCE" """
+        self.forward(self.moving_distance)
+
+    def increase_speed_cars(self):
+        """increases the moving speed of the cars"""
+        self.moving_distance += MOVE_INCREMENT
+
+
+# player.py
+
+from turtle import Turtle
+
+
+# constant variables
+STARTING_POSITION = (0, -280)
+MOVE_DISTANCE = 10
+FINISH_LINE_Y = 280
+UP = 90  # facing north of the screen
+
+
+class Player(Turtle):  # inherits from superclass Turtle
+    """the turtle that crosses the road and that we control using keystrokes"""
+
+    def __init__(self):
+        """initializes turtle object"""
+        super().__init__()  # inherits everything from superclass Turtle
+        self.create_turtle()
+
+    def create_turtle(self):
+        """creates a new turtle at its STARTING_POSITION"""
+        self.shape("turtle")
+        self.color("green")
+        self.penup()  # makes that turtle won't draw a line
+        self.goto(STARTING_POSITION)
+        self.setheading(UP)
+
+    def move(self):
+        """moves turtle with move distance "MOVE_DISTANCE" """
+        self.forward(MOVE_DISTANCE)
+
+    def turtle_crossed(self):
+        """turtle moves back to original position"""
+        self.clear()
+        self.create_turtle()
+
+
+# scoreboard.py
+
+from turtle import Turtle
+
+
+FONT = ("Courier", 24, "normal")
+ALIGNMENT = "left"
+SCOREBOARD_LOCATION = (-280, 260)  # a tuple for the location of the levelboard
+
+
+class Scoreboard(Turtle):  # inherits from superclass Turtle
+    """writes the level we are currently on and "game over" at the end of the game"""
+
+    def __init__(self):
+        """initializes a new scoreboard object"""
+        super().__init__()  # inherits from superclass Turtle
+        self.penup()
+        self.level = 1
+        self.display_level()
+
+    def display_level(self):
+        """displays the level the player is currently in"""
+        self.goto(SCOREBOARD_LOCATION)
+        self.hideturtle()  # hides the turtle, otherwise you see the turtle underneath the scoreboard
+        self.color("black")
+        self.write(f"Level: {self.level}", align=ALIGNMENT, font=FONT)
+
+    def update_level(self):
+        """adds level to self.level and displays new score/level"""
+        self.level += 1
+        self.clear()
+        self.display_level()
+
+    def game_over(self):
+        """displays 'Game Over!' in the middle of the screen"""
+        self.goto(0, 0)
+        self.write("GAME OVER!", align=ALIGNMENT, font=FONT)
+
