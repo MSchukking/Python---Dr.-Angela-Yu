@@ -1,7 +1,11 @@
-# sa mar 19, 2022
+# sa mar 19, su mar 20, 2022
 # day 23
 # OBJECTIVE: write The Turtle Crossing Game
-import random
+# this game is written in main.py, car_manager.py, player.py and scoreboard.py
+
+
+# main.py:
+
 import time
 from turtle import Screen
 from player import Player
@@ -14,58 +18,55 @@ screen.setup(width=600, height=600)
 screen.title("The Turtle Crossing Game")
 screen.tracer(0)  # turn of tracer, the screen we see only updates when screen.update() is in the code
 
-turtle = Player()
+player = Player()
 car = CarManager()
+car.randomly_create_cars()
 score = Scoreboard()
-
 
 # move turtle forwards when you press the "Up" key. It can only move forwards, not back, left or right.
 screen.listen()  # screen starts listening to keystrokes
-screen.onkey(key="Up", fun=turtle.move)
+screen.onkey(key="Up", fun=player.move)
 
 game_is_on = True
-create_car = [True, False, False, False, False, False]  # determines when a car is created
-cars = [car]
-
+number_while_loops = 1
 while game_is_on:
-
-    do_create_car = random.choice(create_car)
-    if do_create_car:
-        car = CarManager()
-        cars.append(car)
-        for car in cars:
-            car.move()
-
     time.sleep(0.1)  # the code only runs every 0.1 seconds: while loop refreshes every 0.1 seconds
     screen.update()
 
+    car.move()
+    # only create a car every 6 times that the while loop runs
+    if number_while_loops % 6 == 0:
+        car.randomly_create_cars()
+
     # when the turtle hits the top edge of the screen, it moves back to the original position and the player levels up.
     # On the next level, the car speed increases
-    if turtle.ycor() > 280:
-        turtle.turtle_crossed()
+    if player.ycor() > 280:
+        player.turtle_crossed()
         score.update_level()
-        for car in cars:
-            car.increase_speed_cars()
+        car.increase_speed_cars()
 
-    for car in cars:
-        car.move()
+    # when the turtle collides with a car, it's game over and everything stops
+    for x in car.cars:
+        if player.distance(x) < 20:
+            game_is_on = False
+            score.game_over()
+
+    number_while_loops += 1
 
 screen.exitonclick()
 
 
-# carmanager.py
+# car_manager.py:
 
 import random
-from random import Random
 from turtle import Turtle
+
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 STARTING_MOVE_DISTANCE = 5
-MOVE_INCREMENT = 10
+MOVE_INCREMENT = 5
 START_X = 300  # starting x position of car object
 LEFT = 180  # facing left is 180 degrees
-
-cars = []
 
 
 class CarManager(Turtle):  # inherits from superclass Turtle
@@ -74,26 +75,40 @@ class CarManager(Turtle):  # inherits from superclass Turtle
     def __init__(self):
         """initializes the car object"""
         super().__init__()  # inherits from superclass Turtle
-        self.shape("square")
-        self.color(random.choice(COLORS))
-        self.shapesize(stretch_wid=1, stretch_len=2)  # turtle is 20x20, this makes 40x20
-        self.penup()  # makes that the car won't draw a line
-        self.setheading(LEFT)  # moves car to the left
-        start_y = random.randint(-300, 300)  # creates a random number between -300 and 300, including -300 and 300
-        self.goto(START_X, start_y)
+        self.hideturtle()  # without this there is a turtle in the middle of the screen
+        self.cars = []
         self.moving_distance = STARTING_MOVE_DISTANCE
-        self.move()
+        self.increment_speed = MOVE_INCREMENT
+
+    def create_cars(self):
+        """returns a new car of a random color in a random y-location in the list 'self.cars' """
+        car = Turtle(shape="square")
+        car.color(random.choice(COLORS))
+        car.shapesize(stretch_wid=1, stretch_len=2)  # turtle is 20x20, this makes 40x20
+        car.penup()  # makes that the car won't draw a line
+        car.setheading(LEFT)  # moves car to the left
+        start_y = random.randint(-250, 250)  # creates a random number between -300 and 300, including -300 and 300
+        car.goto(START_X, start_y)
+        return self.cars.append(car)
+
+    def randomly_create_cars(self):
+        """returns create_cars() randomly over time"""
+        random_create_car = [True, False]  # determines when a car is created
+        do_create_car = random.choice(random_create_car)
+        if do_create_car:
+            return self.create_cars()  # add a car to the car list
 
     def move(self):
         """moves car object forward in speed "STARTING_MOVE_DISTANCE" """
-        self.forward(self.moving_distance)
+        for car_number in range(len(self.cars)-1):
+            self.cars[car_number].forward(self.moving_distance)
 
     def increase_speed_cars(self):
-        """increases the moving speed of the cars"""
-        self.moving_distance += MOVE_INCREMENT
+        """returns an increased moving speed of the cars"""
+        self.moving_distance += self.increment_speed
 
 
-# player.py
+# player.py:
 
 from turtle import Turtle
 
@@ -131,7 +146,7 @@ class Player(Turtle):  # inherits from superclass Turtle
         self.create_turtle()
 
 
-# scoreboard.py
+# scoreboard.py:
 
 from turtle import Turtle
 
@@ -166,6 +181,5 @@ class Scoreboard(Turtle):  # inherits from superclass Turtle
 
     def game_over(self):
         """displays 'Game Over!' in the middle of the screen"""
-        self.goto(0, 0)
+        self.goto(-50, 0)
         self.write("GAME OVER!", align=ALIGNMENT, font=FONT)
-
