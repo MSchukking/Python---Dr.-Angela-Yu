@@ -1,10 +1,10 @@
-# we mar 9, we mar 10, su mar 13 and mo mar 14, 2022
+# we mar 9, we mar 10, su mar 13 and mo mar 14, we mar 23, th mar 24, 2022
 # day 20 - the snake game - part 1
 # day 21 - the snake game - part 2
+# day 24 - the snake game - better version
 # OBJECTIVE: Create the Nokia snake game
 
 """main.py controls the entire game: dictates how the screen should behave, how the snake behaves"""
-"""below I describe snake.py, food.py and scoreboard.py""" 
 
 from turtle import Screen
 from snake import Snake
@@ -54,29 +54,24 @@ while game_is_on:
 
     # detect collision with wall:
     if head.xcor() > 280 or head.xcor() < -290 or head.ycor() > 280 or head.ycor() < -280:
-        game_is_on = False  # exit while loop and end game
-        scoreboard.game_over()
-
-    # # detect collision with tail:
-    # # if head collides with any segment in the tail:
-    # for segment in snake.all_segments:
-    #     if segment == head:  # do this, cause otherwise the next if statement is always true:
-    #         pass
-    #     elif head.distance(segment) < 10:
-    #         game_is_on = False
-    #         scoreboard.game_over()
-    #     # trigger game over sequence:
+        scoreboard.reset()
+        snake.reset()
 
 # make code above shorter by using slicing:
     for segment in snake.all_segments[1:]:  # all segments except the head
         if head.distance(segment) < 10:
-            game_is_on = False
-            scoreboard.game_over()
+            scoreboard.reset()
+            snake.reset()
 
 screen.exitonclick()  # screen only disappears when you click
 
 
-# snake.py: 
+# data.txt
+
+0
+
+
+# snake.py
 
 from turtle import Turtle
 
@@ -95,9 +90,12 @@ class Snake:
     def __init__(self):
         """initializes a new Snake object"""
         self.all_segments = []
+        self.create_snake()
+
+    def create_snake(self):
+        """creates a new snake"""
         for position in STARTING_POSITIONS:
             self.add_segment(position)
-
 
     def add_segment(self, position):
         """returns position to where the segment should be added"""
@@ -106,6 +104,14 @@ class Snake:
         new_segment.goto(position)
         new_segment.color("white")
         self.all_segments.append(new_segment)
+
+    def reset(self):
+        """initiates a new snake once game is over"""
+        for segment in self.all_segments:
+            segment.goto(1000, 1000)  # send current segments to a place off the screen.
+            # if you don't do this, you will keep seeing the segments of the previous snake on the screen.
+        self.all_segments.clear()  # removes all items from list
+        self.create_snake()
 
     def extend(self):
         """adds a new segment to the end of the snake"""
@@ -143,7 +149,7 @@ class Snake:
             self.all_segments[0].setheading(RIGHT)
 
 
-# food.py:
+# food.py
 
 from turtle import Turtle
 import random
@@ -172,7 +178,7 @@ class Food(Turtle):  # Food class inherits from Turtle superclass
         self.goto(random_x, random_y)  # put food at a random location
 
 
-# scoreboard.py: 
+# scoreboard.py
 
 from turtle import Turtle
 
@@ -191,18 +197,28 @@ class Score(Turtle):  # Score inherits from Turtle superclass
 
     def display_score(self):
         """displaying sum of points at the top of the screen"""
+        self.clear()
         self.goto(0, 280)  # put text at the bottom of the screen
         self.hideturtle()  # hide turtle, otherwise you see turtle below the text
         self.color("white")
-        self.write(f"SCORE = {self.score}", align=ALIGNMENT, font=FONT)
+        with open("data.txt", mode="r") as data:
+            high_score = int(data.read())
+        self.write(f"SCORE = {self.score} High Score: {high_score} ", align=ALIGNMENT, font=FONT)
+
+    def reset(self):
+        """rewrites the high_score in the file data.txt to the score of the current score, if this was
+        higher than the previous high_score. Resets current score to zero"""
+        with open("data.txt", mode="r") as data:
+            high_score = int(data.read())
+            if self.score >= high_score:
+                with open("data.txt", mode="w") as data:
+                    self.score = str(self.score)
+                    data.write(self.score)
+        self.score = 0
+        self.display_score()
 
     def update_score(self):
         """adds a point to the score and display new score"""
         self.score += 1
         self.clear()
         self.display_score()
-
-    def game_over(self):
-        """writes GAME OVER in the screen"""
-        self.goto(0,0)  # in the center of the screen
-        self.write("GAME OVER!", align=ALIGNMENT, font=FONT)
