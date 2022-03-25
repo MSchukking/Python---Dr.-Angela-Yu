@@ -1,0 +1,34 @@
+# fr mar 25, 2022
+# day 24
+# OBJECTIVE: Use the standard mail in starting_letter.txt and list of names in invited_names.txt to create multiple 
+# mails each directed at a name in the list invited_names.txt 
+
+def open_letter():
+    """opens starting_letter.txt in the read mode"""
+    with open("/Users/moniqueschukking/Desktop/Mail Merge Project Start/Input/Letters/starting_letter.txt", mode="r") \
+            as file:
+        return file.read()
+
+
+def new_email(name):
+    """opens a new txt file in directory ReadyToSend and writes an email with a new name in it"""
+    with open(f"/Users/moniqueschukking/Desktop/Mail Merge Project Start/Output/ReadyToSend/mail_for_{name}.txt",
+              mode="w") as \
+            mail:
+        text = open_letter()
+        new_text = text.replace("[name]", name)  # replaces a string with another string in a variable
+        mail.write(new_text)
+
+
+# open invited_names.txt as a list with each line as an item in the list
+name_list = open("/Users/moniqueschukking/Desktop/Mail Merge Project Start/Input/Names/invited_names.txt").readlines()
+
+# loop through the names in the list:
+for n in range(len(name_list)):
+    list_name = name_list[n - 1]
+    stripped_name = list_name.strip("\n")  # removes \n at the end of the name
+    new_email(name=stripped_name)  # create an email using the new_list_name
+
+# Hint1: This method will help you: https://www.w3schools.com/python/ref_file_readlines.asp
+# Hint2: This method will also help you: https://www.w3schools.com/python/ref_string_replace.asp
+# Hint3: THis method will help you: https://www.w3schools.com/python/ref_string_strip.asp
