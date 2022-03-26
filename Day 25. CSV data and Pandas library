@@ -1,0 +1,81 @@
+# fr mar 25, sa mar 26, 2022
+# day 25
+# OBJECTIVES: learning about CSV data and the Pandas library
+# pandas documentation: https://pandas.pydata.org/docs/
+
+
+# GOAL: create a list and extract all the temperatures as integers without(w/o) pandas library and with pandas library
+
+# w/o Pandas library:
+# import csv  # csv is an in build library to work with CSVs
+#
+# # open the csv file weather.csv:
+# with open("/Users/moniqueschukking/PycharmProjects/day-25/weather.csv", mode="r") as data_file:
+#     data = csv.reader(data_file)  # data is now of the type "csv.reader"
+#     temperatures = []  # will contain all the temperatures as integers
+#     for row in data:  # loop through each row (except the first title row), rows are lists
+#         if row[1] != "temp":
+#             temperatures.append(int(row[1]))  # extract temperature as an integer from each list
+#     print(temperatures)
+#     print(type(temperatures))
+
+# with Pandas library:
+
+import pandas
+
+data = pandas.read_csv("/Users/moniqueschukking/PycharmProjects/day-25/weather.csv")
+print(data["temp"])
+
+data_dict = data.to_dict()  # converts datafram to a dictionary
+print(data_dict)
+
+temp_list = data["temp"].to_list()
+print(temp_list)
+print(len(temp_list))
+
+
+# what is the average temperature of our column of temperatures?
+average_temp = sum(temp_list) / len(temp_list)
+print(average_temp)
+# or:
+avg_series_data = data["temp"].mean()
+print(avg_series_data)
+
+
+# get hold of the maximum value of temperatures:
+print(data["temp"].max())
+
+
+# how to get hold of a data series/ dataframe column:
+print(data.temp)
+# is same as:
+print(data["temp"])
+
+
+# how to get hold of the first row of a dataframe?
+print(data[data.day == "Monday"])
+
+
+# how to pull out the row of data, where the temperature is the maximum?
+print(data[data.temp == data.temp.max()])
+
+
+# show monday's temperature in farenheit:
+def c_to_f(temp_c):
+    temp_f = temp_c * (9/5) + 32
+    return temp_f
+
+monday = data[data.day == "Monday"]
+print(monday.temp)
+monday_temp_f = c_to_f(temp_c = monday.temp)
+print(monday_temp_f)
+
+# how to create a dataframe(df) from a dictionary?
+data_dict = {
+    "students": ["Amy", "James", "Angela"],
+    "scores": [76, 56, 65],
+}
+data = pandas.DataFrame(data_dict)
+
+# convert dataframe to a csv file:
+data.to_csv("new_data.csv")
