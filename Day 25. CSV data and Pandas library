@@ -1,4 +1,4 @@
-# fr mar 25, sa mar 26, 2022
+# fr mar 25, sa mar 26, su mar 27, 2022
 # day 25
 # OBJECTIVES: learning about CSV data and the Pandas library
 # pandas documentation: https://pandas.pydata.org/docs/
@@ -79,3 +79,40 @@ data = pandas.DataFrame(data_dict)
 
 # convert dataframe to a csv file:
 data.to_csv("new_data.csv")
+
+
+
+# D25.229. Squirrel Census data:
+# data from: https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw
+# OBJECTIVES: Use Squirrel_Data.csv and Pandas library to:
+# todo 1: create a csv called squirrel_count.csv that has a small table that contains the furr color, logged in primary
+#  furr column: only options are: Grey, Black, Cinnamon
+# todo 2: figure out how many total squirrels are of each color
+# todo 3: create a new dataframe using this information
+
+import pandas
+
+# import data as a dataframe:
+data = pandas.read_csv("/Users/moniqueschukking/PycharmProjects/day-25/2018_Central_Park_Squirrel_Census_-_"
+                       "Squirrel_Data.csv")
+print(data["Primary Fur Color"].value_counts())  # displays the counts of each color
+
+# put the squirrel count of each color in a variable as an integer:
+sum_gray = sum(data["Primary Fur Color"] == "Gray")  # integer
+sum_cinnamon = sum(data["Primary Fur Color"] == "Cinnamon")
+sum_black = sum(data["Primary Fur Color"] == "Black")
+
+# create dictionary with the sum of the colors:
+color_dict = {
+    "Fur Color": ["Gray", "Cinnamon", "Black"],
+    "Squirrel Count": [sum_gray, sum_cinnamon, sum_black],
+}
+print(color_dict)
+
+# create a dataframe from the dictionary:
+color_df = pandas.DataFrame(color_dict)
+print(color_df)
+
+# create csv file from df:
+color_df.to_csv("squirrel_count.csv")
+
