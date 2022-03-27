@@ -1,0 +1,66 @@
+# su mar 27, 2022
+# day 25
+# OBJECTIVES: create the us states guessing game
+# contains: 50_states.csv file: contains all 50 states by name and x and y values
+# blank_states_img.gif (turtle only works with gif): image with us with all states blanked out
+
+import pandas
+import turtle
+
+FONT = ("Courier", 16, "normal")
+
+# set up the blank_states_img.gif file as the screen:
+screen = turtle.Screen()
+screen.title("U.S. States Game")
+screen.setup(width=800, height=800) # change screen size
+image = "blank_states_img.gif"
+screen.addshape(image)
+turtle.shape(image)
+
+# import 50_states.csv as dataframe:
+data = pandas.read_csv("/Users/moniqueschukking/Desktop/100 days of python/Day 25/us-states-game-start/50_states.csv")
+
+
+def text_on_state(state_name, x, y):
+    state = turtle.Turtle()
+    state.hideturtle()
+    state.penup()
+    state.goto(x, y)
+    state.write(state_name, align="center", font=FONT)
+
+
+game_is_on = True
+# check if input in answer_state is among the 50 states in data:
+while game_is_on:
+    # get a pop-up box to ask for a question:
+    answer_state = screen.textinput(title="Guess the State", prompt="What is another state's name?").title()
+    # lower case is converted into Title case and answer_state is a string
+    for x in data.state:
+        if x == answer_state:
+            print("True")
+            # write the state onto the map:
+            x_cor = int(data.x[data.state == answer_state])
+            y_cor = int(data.y[data.state == answer_state])
+            text_on_state(answer_state, x_cor, y_cor)
+
+# DONE 1: convert guess to Title case
+# when user types a state that is in 50_states_csv: the state should go to its x and y coordinate on the screen
+# DONE 2: check if the guess is among the 50 states
+# DONE 3: write correct guesses onto the map
+# if input is wrong, nothing happens and input box shows up again
+# DONE 4: use a loop to allow the user to keep guessing
+# todo 5: record the correct guesses in a list
+# todo 6: keep track of the score
+
+
+# keeping our screen open even though the code is finished running.
+turtle.mainloop() # use instead of exitonclick() -> we don't want the screen to exit when we click!
+
+
+# # get coordinates of each state to put in the 50_states_csv:
+# def get_mouse_click_coor(x, y):
+#     """get x and y values and prints them out"""
+#     print(x, y)
+#
+# # listen for when mouse clicks, then calls get_mouse_click_coor function:
+# turtle.onscreenclick(get_mouse_click_coor)
