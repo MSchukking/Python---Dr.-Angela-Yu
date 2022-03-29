@@ -1,66 +1,160 @@
-# su mar 27, 2022
+# su mar 27, tu mar 29, 2022
 # day 25
-# OBJECTIVES: create the us states guessing game
+# OBJECTIVES: create the U.S. states guessing game
 # contains: 50_states.csv file: contains all 50 states by name and x and y values
 # blank_states_img.gif (turtle only works with gif): image with us with all states blanked out
+# scoreboard.py: contains the class Score 
+
+# main.py: 
 
 import pandas
 import turtle
+from scoreboard import Score
 
+ALIGNMENT = "center"
 FONT = ("Courier", 16, "normal")
 
 # set up the blank_states_img.gif file as the screen:
 screen = turtle.Screen()
 screen.title("U.S. States Game")
-screen.setup(width=800, height=800) # change screen size
+screen.setup(width=800, height=800)  # change screen size
 image = "blank_states_img.gif"
 screen.addshape(image)
 turtle.shape(image)
 
 # import 50_states.csv as dataframe:
 data = pandas.read_csv("/Users/moniqueschukking/Desktop/100 days of python/Day 25/us-states-game-start/50_states.csv")
+data_states = data.state.to_list()  # converts data series (data column) to a list
 
 
 def text_on_state(state_name, x, y):
+    """locates the state name to its x and y coordinates on the map"""
     state = turtle.Turtle()
     state.hideturtle()
     state.penup()
     state.goto(x, y)
-    state.write(state_name, align="center", font=FONT)
+    state.write(state_name, align=ALIGNMENT, font=FONT)
 
 
+score = Score()
 game_is_on = True
 # check if input in answer_state is among the 50 states in data:
 while game_is_on:
+    score.display_score()
     # get a pop-up box to ask for a question:
     answer_state = screen.textinput(title="Guess the State", prompt="What is another state's name?").title()
     # lower case is converted into Title case and answer_state is a string
-    for x in data.state:
-        if x == answer_state:
-            print("True")
-            # write the state onto the map:
-            x_cor = int(data.x[data.state == answer_state])
-            y_cor = int(data.y[data.state == answer_state])
-            text_on_state(answer_state, x_cor, y_cor)
+    if answer_state == "Exit":
+        break  # exits the game (NOTE: to make this work, turtle.mainloop() should not be in the code)
 
-# DONE 1: convert guess to Title case
-# when user types a state that is in 50_states_csv: the state should go to its x and y coordinate on the screen
-# DONE 2: check if the guess is among the 50 states
-# DONE 3: write correct guesses onto the map
-# if input is wrong, nothing happens and input box shows up again
-# DONE 4: use a loop to allow the user to keep guessing
-# todo 5: record the correct guesses in a list
-# todo 6: keep track of the score
+    elif answer_state in data_states:
+        score.update_score()
+        data_states.remove(answer_state)  # removes the guessed state from the list data_states
+        # write the state onto the map:
+        x_cor = int(data.x[data.state == answer_state])
+        y_cor = int(data.y[data.state == answer_state])
+        text_on_state(answer_state, x_cor, y_cor)  # locates state name on its x and y coordinate on the map
 
+# save states not guessed in a csv "states_to_study":
+states_dict = {
+    "states to learn": data_states,
+}
+states_df = pandas.DataFrame(states_dict)  # NOTE: works with either a dictionary or a list
+states_df.to_csv("states_to_study.csv")
 
-# keeping our screen open even though the code is finished running.
-turtle.mainloop() # use instead of exitonclick() -> we don't want the screen to exit when we click!
+# not used code:
 
+# keeping our screen open even though the code is finished running:
+# turtle.mainloop()  # use instead of exitonclick() -> we don't want the screen to exit when we click!
 
 # # get coordinates of each state to put in the 50_states_csv:
 # def get_mouse_click_coor(x, y):
 #     """get x and y values and prints them out"""
 #     print(x, y)
-#
-# # listen for when mouse clicks, then calls get_mouse_click_coor function:
-# turtle.onscreenclick(get_mouse_click_coor)
+
+
+# scoreboard.py:
+
+from turtle import Turtle
+
+ALIGNMENT = "center"
+FONT = ("Courier", 16, "normal")
+
+
+class Score(Turtle):  # Score inhertits from the Turtle superclass
+    """keeps track of the score and displays the score"""
+
+    def __init__(self):
+        """initializes the scoreboard object"""
+        super().__init__()  # inherits from the superclass
+        self.penup()
+        self.hideturtle()
+        self.score = []
+        self.display_score()
+
+    def display_score(self):
+        """displays sum of points at the top of the screen"""
+        self.clear()
+        sum_score = sum(self.score)
+        self.goto(x=0, y=300)
+        self.color("black")
+        self.write(f"SCORE = {sum_score}/50", align=ALIGNMENT, font=FONT)
+
+    def update_score(self):
+        """increases the score with 1 point"""
+        self.score.append(1)
+
+
+# 50_states.csv:
+
+state,x,y
+Alabama,139,-77
+Alaska,-204,-170
+Arizona,-203,-40
+Arkansas,57,-53
+California,-297,13
+Colorado,-112,20
+Connecticut,297,96
+Delaware,275,42
+Florida,220,-145
+Georgia,182,-75
+Hawaii,-317,-143
+Idaho,-216,122
+Illinois,95,37
+Indiana,133,39
+Iowa,38,65
+Kansas,-17,5
+Kentucky,149,1
+Louisiana,59,-114
+Maine,319,164
+Maryland,288,27
+Massachusetts,312,112
+Michigan,148,101
+Minnesota,23,135
+Mississippi,94,-78
+Missouri,49,6
+Montana,-141,150
+Nebraska,-61,66
+Nevada,-257,56
+New Hampshire,302,127
+New Jersey,282,65
+New Mexico,-128,-43
+New York,236,104
+North Carolina,239,-22
+North Dakota,-44,158
+Ohio,176,52
+Oklahoma,-8,-41
+Oregon,-278,138
+Pennsylvania,238,72
+Rhode Island,318,94
+South Carolina,218,-51
+South Dakota,-44,109
+Tennessee,131,-34
+Texas,-38,-106
+Utah,-189,34
+Vermont,282,154
+Virginia,234,12
+Washington,-257,193
+West Virginia,200,20
+Wisconsin,83,113
+Wyoming,-134,90
