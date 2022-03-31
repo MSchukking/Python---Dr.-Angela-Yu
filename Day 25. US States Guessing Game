@@ -1,11 +1,14 @@
 # su mar 27, tu mar 29, 2022
 # day 25
 # OBJECTIVES: create the U.S. states guessing game
+# day 26 (th mar 31, 2022)
+# OBJECTIVES: make the code shorter using list comprehensions
+
 # contains: 50_states.csv file: contains all 50 states by name and x and y values
 # blank_states_img.gif (turtle only works with gif): image with us with all states blanked out
-# scoreboard.py: contains the class Score 
+# scoreboard.py: contains the class Score
 
-# main.py: 
+# main.py:
 
 import pandas
 import turtle
@@ -37,6 +40,7 @@ def text_on_state(state_name, x, y):
 
 
 score = Score()
+guessed_states = []
 game_is_on = True
 # check if input in answer_state is among the 50 states in data:
 while game_is_on:
@@ -49,17 +53,16 @@ while game_is_on:
 
     elif answer_state in data_states:
         score.update_score()
-        data_states.remove(answer_state)  # removes the guessed state from the list data_states
+        guessed_states.append(answer_state)  # adds guessed state from the list guessed_states
         # write the state onto the map:
         x_cor = int(data.x[data.state == answer_state])
         y_cor = int(data.y[data.state == answer_state])
         text_on_state(answer_state, x_cor, y_cor)  # locates state name on its x and y coordinate on the map
 
 # save states not guessed in a csv "states_to_study":
-states_dict = {
-    "states to learn": data_states,
-}
-states_df = pandas.DataFrame(states_dict)  # NOTE: works with either a dictionary or a list
+states_to_learn = [state for state in data_states if state not in guessed_states]
+print(states_to_learn)
+states_df = pandas.DataFrame(states_to_learn)
 states_df.to_csv("states_to_study.csv")
 
 # not used code:
