@@ -1,0 +1,62 @@
+# su apr 3, 2022
+# day 27
+# OBJECTIVES: learn about the tkinter module, *args and **kwargs 
+
+# main.py: 
+
+import tkinter
+
+FONT = ("Arial", 24, "bold")  # a tuple
+
+window = tkinter.Tk()
+window.title("My first GUI Program")  # title at the top of the window
+window.minsize(width=500, height=300)  # the window will change with the amount of buttons in the window
+
+# Label - How to create a label
+my_label = tkinter.Label(text="I am a label", font=FONT)  # this by itself won't show a label in the screen. Needs .pack() for this
+my_label.pack(side="left")  # packs the label on the screen and puts it in the center of the window
+# https://docs.python.org/3/library/tkinter.html#the-packer
+
+window.mainloop()  # keeps window on screen and listens to what user wants to do. This line of code always needs to
+# be at the end of the code
+
+
+# playground.py: 
+
+def add(*args):
+    sum = 0
+    for n in args:
+        sum += n
+    return print(sum)
+
+add(3, 3, 3, 3)
+
+def calculate(**kwargs):
+    print(kwargs)
+
+calculate(add=3, multiply=5)
+
+
+# make a calculator:
+def calculate(n, **kwargs):
+    print(kwargs)
+    n += kwargs["add"]
+    n *= kwargs["multiply"]
+    print(n)
+
+calculate(2, add=3, multiply=5)
+
+
+# the Tkinter module works with **kw because it was created from another language than Python
+# below here explains how the Tkinter module was created:
+class Car:
+
+    def __init__(self, **kw):
+        self.make = kw["make"]
+        self.model = kw["model"]
+        self.color = kw.get("color")  # .get() is same method as the one above, but will give NONE instead of an error
+        # when the key is not in the dictionary "kw"
+        self.seats = kw.get("seats")
+
+my_car = Car(make="Nissan", model="GT-R")
+print(my_car.make)
