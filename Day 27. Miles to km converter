@@ -1,0 +1,58 @@
+# tu apr 5, 2022
+# day 27
+# OBJECTIVES: created a mile to km converter
+
+from tkinter import *  # from tkinter import all Classes
+
+
+FONT = ("Arial", 24)  # a tuple
+
+
+def miles_to_km():
+    """converts miles to km and puts it in the entry widget entry_km"""
+    input_miles = float(entry_miles.get())
+    km_str = str(input_miles*1.689)
+    label_km.config(text=km_str)
+
+
+window = Tk()
+window.title("Mile to km converter ")  # title at top of the window
+window.minsize(width=500, height=300)  # size of window
+window.config(padx=100, pady=100)  # creates distance between widgets and the window walls
+
+# label: Miles
+label_1 = Label(text="miles", font=FONT)
+label_1.grid(column=2, row=0)  # column is x-axis, row is y-axis starting at the top
+label_1.config(padx=20, pady=20)  # adds distance around widget
+
+# entry for miles:
+entry_miles = Entry(width=10)  # creates entry box
+entry_miles.insert(END, string="0")  # adds an starting entry
+entry_miles.grid(column=1, row=0)  # column is x-axis, row is y-axis starting at the top
+
+# label for "is equal to"
+label_2 = Label(text="is equal to", font=FONT)
+label_2.grid(column=0, row=1)
+label_2.config(padx=20, pady=20)  # adds distance around widget
+
+# label for kilometers:
+label_km = Label(text="0")
+label_km.grid(column=1, row=1)  # column is x-axis, row is y-axis starting at the top
+
+# # entry for kilometers:
+# entry_km = Entry(width=10)
+# entry_km.insert(END, string=" ")
+# entry_km.grid(column=1, row=1)  # column is x-axis, row is y-axis starting at the top
+
+# label for kilometers:
+label_3 = Label(text="km", font=FONT)
+label_3.grid(column=2, row=1)  # column is x-axis, row is y-axis starting at the top
+label_3.config(padx=20, pady=20)  # adds distance around widget
+
+# button for Calculate:
+button = Button(text="calculate", command=miles_to_km)  # creates object button that executes function button_clicked
+button.grid(column=1, row=3)
+button.config(padx=20, pady=20)  # adds distance around widget
+
+window.mainloop()  # always needs to be at the end of the code: it keeps window in the screen and makes it listen to
+# the users keystrokes
