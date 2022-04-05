@@ -1,21 +1,115 @@
-# su apr 3, 2022
+# su apr 3, tu apr 5, 2022
 # day 27
 # OBJECTIVES: learn about the tkinter module, *args and **kwargs 
 
 # main.py: 
 
-import tkinter
+from tkinter import *  # from module tkinter import all classes, so now if I use a Class I don't neet to put
+# tkinter in front of it!
+
+
+def button_clicked():
+    print("I got clicked")
+    new_text = user_entry.get()  # retrieves text into input entry as a string
+    my_label["text"] = new_text  # changes the my_label text into new_text
+
 
 FONT = ("Arial", 24, "bold")  # a tuple
 
-window = tkinter.Tk()
+window = Tk()  # if didnt import all classes it is tkinter.Tk()
 window.title("My first GUI Program")  # title at the top of the window
 window.minsize(width=500, height=300)  # the window will change with the amount of buttons in the window
+window.config(padx=50, pady=50)  # adds distance between widgets and the walls of the screen
 
-# Label - How to create a label
-my_label = tkinter.Label(text="I am a label", font=FONT)  # this by itself won't show a label in the screen. Needs .pack() for this
-my_label.pack(side="left")  # packs the label on the screen and puts it in the center of the window
+# Label - How to create a label:
+my_label = Label(text="I am a label", font=FONT)  # this by itself won't show a label in the screen. Needs .pack() for
+# this. If didn't import all classes it is: tkinter.Label()
+# change the text in object my_label:
+my_label["text"] = "New text"
+# or:
+my_label.config(text="New text")
+my_label.grid(column=0, row=0)  # column is x, row is y
 # https://docs.python.org/3/library/tkinter.html#the-packer
+my_label.config(padx=50, pady=50)  # adds space around the label widget
+
+# Button
+button = Button(text="Click Me", command=button_clicked)  # an object button that executes function button_clicked
+# once clicked
+button.grid(column=1, row =1)  # column is x, row = y
+
+button_2 = Button(text="new_button", command=button_clicked)
+button_2.grid(column=2, row=0)  # column = x, row = y
+
+# Entry:
+# documentation: http://tcl.tk/man/tcl8.6/TkCmd/entry.htm
+user_entry = Entry(width=30)  # create object input from Class Entry() of module tkinter
+# Add some text to begin with:
+user_entry.insert(END, string="Some text to begin with. ")
+# Gets text in entry:
+user_entry.grid(column=3, row=2)  # column = x, row = y
+
+
+# other tkinter widgets:
+#
+# # Text: large area that allows to add multiple lines of text
+# text = Text(height=5, width=30)
+# # Puts cursor in textbox.
+# text.focus()
+# # Adds some text to begin with.
+# text.insert(END, "Example of multi-line text entry.")
+# # Get's current value in textbox at line 1, character 0
+# print(text.get("1.0", END))
+# text.pack()
+#
+#
+# # Spinbox
+# def spinbox_used():
+#     # gets the current value in spinbox.
+#     print(spinbox.get())
+# spinbox = Spinbox(from_=0, to=10, width=5, command=spinbox_used)
+# spinbox.pack()
+#
+#
+# # Scale
+# # Called with current scale value.
+# def scale_used(value):
+#     print(value)
+# scale = Scale(from_=0, to=100, command=scale_used)
+# scale.pack()
+#
+#
+# # Checkbutton
+# def checkbutton_used():
+#     # Prints 1 if On button checked, otherwise 0.
+#     print(checked_state.get())
+# # variable to hold on to checked state, 0 is off, 1 is on.
+# checked_state = IntVar()
+# checkbutton = Checkbutton(text="Is On?", variable=checked_state, command=checkbutton_used)
+# checked_state.get()
+# checkbutton.pack()
+#
+#
+# # Radiobutton
+# def radio_used():
+#     print(radio_state.get())
+# # Variable to hold on to which radio button value is checked.
+# radio_state = IntVar()
+# radiobutton1 = Radiobutton(text="Option1", value=1, variable=radio_state, command=radio_used)
+# radiobutton2 = Radiobutton(text="Option2", value=2, variable=radio_state, command=radio_used)
+# radiobutton1.pack()
+# radiobutton2.pack()
+#
+#
+# # Listbox: a list of options created from a Python list
+# def listbox_used(event):
+#     # Gets current selection from listbox
+#     print(listbox.get(listbox.curselection()))
+# listbox = Listbox(height=4)
+# fruits = ["Apple", "Pear", "Orange", "Banana"]
+# for item in fruits:
+#     listbox.insert(fruits.index(item), item)
+# listbox.bind("<<ListboxSelect>>", listbox_used)
+# listbox.pack()
 
 window.mainloop()  # keeps window on screen and listens to what user wants to do. This line of code always needs to
 # be at the end of the code
